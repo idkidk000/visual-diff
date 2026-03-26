@@ -1,0 +1,36 @@
+{
+  "[css]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "oxc.oxc-vscode"
+  },
+  "biome.enabled": false,
+  "editor.codeActionsOnSave": [],
+  "editor.formatOnPaste": false,
+  "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "file",
+  "editor.formatOnType": false,
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "files.readonlyInclude": {
+    "**/routeTree.gen.ts": true
+  },
+  "files.watcherExclude": {
+    "**/routeTree.gen.ts": true
+  },
+  "oxc.enable": true,
+  "search.exclude": {
+    "**/routeTree.gen.ts": true
+  },
+  "todo-tree.tree.disableCompactFolders": false,
+  "todo-tree.tree.showBadges": true,
+  "typescript.experimental.useTsgo": true
+}

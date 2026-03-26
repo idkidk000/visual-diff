@@ -1,0 +1,53 @@
+{
+  "name": "visual-diff",
+  "displayName": "Visual Diff",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite dev",
+    "format": "oxfmt",
+    "lint": "oxlint --fix",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "start": "node .output/server/index.mjs",
+    "check": "tsgo --noEmit"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "latest",
+    "@tanstack/react-devtools": "latest",
+    "@tanstack/react-router": "latest",
+    "@tanstack/react-router-devtools": "latest",
+    "@tanstack/react-router-ssr-query": "latest",
+    "@tanstack/react-start": "latest",
+    "@tanstack/router-plugin": "latest",
+    "lucide-react": "latest",
+    "oxfmt": "latest",
+    "oxlint": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "superjson": "latest",
+    "tailwindcss": "latest",
+    "zod": "latest"
+  },
+  "devDependencies": {
+    "@tanstack/devtools-vite": "latest",
+    "@types/node": "latest",
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "@vitejs/plugin-react": "latest",
+    "clsx": "latest",
+    "nitro": "latest",
+    "oxlint-tsgolint": "latest",
+    "tailwind-merge": "latest",
+    "typescript": "latest",
+    "vite": "latest",
+    "vite-tsconfig-paths": "latest"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "lightningcss"
+    ]
+  }
+}
