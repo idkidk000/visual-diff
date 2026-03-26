@@ -2,6 +2,7 @@
   "name": "visual-diff",
   "displayName": "Visual Diff",
   "private": true,
+  "license": "GPL-3.0-or-later",
   "type": "module",
   "scripts": {
     "build": "vite build",
@@ -9,7 +10,6 @@
     "format": "oxfmt",
     "lint": "oxlint --fix",
     "preview": "vite preview",
-    "test": "vitest run",
     "start": "node .output/server/index.mjs",
     "check": "tsgo --noEmit"
   },
@@ -22,11 +22,8 @@
     "@tanstack/react-start": "latest",
     "@tanstack/router-plugin": "latest",
     "lucide-react": "latest",
-    "oxfmt": "latest",
-    "oxlint": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "superjson": "latest",
     "tailwindcss": "latest",
     "zod": "latest"
   },
@@ -35,14 +32,15 @@
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
+    "@typescript/native-preview": "latest",
     "@vitejs/plugin-react": "latest",
     "clsx": "latest",
     "nitro": "latest",
+    "oxfmt": "latest",
+    "oxlint": "latest",
     "oxlint-tsgolint": "latest",
     "tailwind-merge": "latest",
-    "typescript": "latest",
-    "vite": "latest",
-    "vite-tsconfig-paths": "latest"
+    "vite": "latest"
   },
   "pnpm": {
     "onlyBuiltDependencies": [

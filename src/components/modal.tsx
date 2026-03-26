@@ -13,46 +13,62 @@ import {
   type SetStateAction,
   useState,
   type SyntheticEvent,
+  useEffect,
 } from 'react';
 
 import { Button } from '@/components/button';
 import { cn } from '@/lib/utils';
+
+export const enum ModalState {
+  Closed,
+  Open,
+  Closing,
+}
 
 interface Context {
   ref: RefObject<HTMLDialogElement | null>;
   open: () => void;
   close: () => void;
   toggle: () => void;
-  isOpen: boolean;
-  setIsOpen: Dispatch<SetStateAction<boolean>>;
+  state: ModalState;
+  setState: Dispatch<SetStateAction<ModalState>>;
 }
 
 const Context = createContext<Context | null>(null);
 
+const CLOSING_MS = 300;
+
 export function Modal({ children }: { children: ReactNode }) {
   const ref = useRef<HTMLDialogElement | null>(null);
-  const [isOpen, setIsOpen] = useState(false);
+  const [state, setState] = useState<ModalState>(ModalState.Closed);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const open = useCallback(() => {
+    ref.current?.showModal();
+    setState(ModalState.Open);
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = null;
+  }, []);
+
+  const close = useCallback(() => {
+    setState(ModalState.Closing);
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => ref.current?.close(), CLOSING_MS);
+  }, []);
+
   const value: Context = useMemo(
     () => ({
       ref,
-      isOpen,
-      close() {
-        ref.current?.close();
-      },
-      open() {
-        ref.current?.showModal();
-        setIsOpen(true);
-      },
+      state,
+      close,
+      open,
       toggle() {
-        if (ref.current?.open) ref.current.close();
-        else {
-          ref.current?.showModal();
-          setIsOpen(true);
-        }
+        if (ref.current?.open) close();
+        else open();
       },
-      setIsOpen,
+      setState,
     }),
-    [isOpen]
+    [close, open, state]
   );
 
   return <Context value={value}>{children}</Context>;
@@ -71,21 +87,46 @@ export function ModalContent({
   sticky = false,
   ...props
 }: Omit<ComponentPropsWithoutRef<'dialog'>, 'closedby'> & { sticky?: boolean }) {
-  const { ref, setIsOpen } = useModal();
+  const { close, ref, setState, state } = useModal();
 
   const handleClose = useCallback(
     (event: SyntheticEvent<HTMLDialogElement>) => {
-      setIsOpen(false);
+      setState(ModalState.Closed);
       onClose?.(event);
     },
-    [onClose, setIsOpen]
+    [onClose, setState]
   );
+
+  useEffect(() => {
+    if (!ref.current) return;
+    const controller = new AbortController();
+    ref.current.addEventListener(
+      'click',
+      (event) => {
+        if (event.target !== ref.current) return;
+        if (sticky)
+          ref.current?.animate([{ scale: '100%' }, { scale: '105%' }, { scale: '100%' }], {
+            duration: 300,
+            easing: 'ease-in-out',
+          });
+        else close();
+      },
+      { signal: controller.signal }
+    );
+    return () => controller.abort();
+  }, [close, ref, sticky]);
 
   return (
     <dialog
-      className={cn('m-auto p-4 rounded-sm bg-background text-foreground max-w-dvw max-h-dvh', className)}
+      data-state={state === ModalState.Open ? 'open' : state === ModalState.Closing ? 'closing' : 'closed'}
+      className={cn(
+        'm-auto p-4 rounded-sm bg-background text-foreground max-w-dvw max-h-dvh',
+        'backdrop:transition-colors backdrop:duration-150 backdrop:bg-transparent data-[state=open]:backdrop:bg-black/33',
+        'transition-[scale,opacity,translate] duration-150 scale-50 opacity-0 translate-y-1/2 data-[state=open]:scale-100 data-[state=open]:opacity-100 data-[state=open]:translate-y-0 data-[state=closing]:-translate-y-1/2',
+        className
+      )}
       ref={ref}
-      closedby={sticky ? 'closerequest' : 'any'}
+      closedby='none'
       onClose={handleClose}
       {...props}
     >

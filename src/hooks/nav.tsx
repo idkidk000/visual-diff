@@ -1,7 +1,7 @@
 import { createContext, useContext, useMemo, useRef, type ReactNode, type RefObject } from 'react';
 
 interface Context {
-  ref: RefObject<HTMLDivElement | null>;
+  ref: RefObject<HTMLElement | null>;
 }
 
 const Context = createContext<Context | null>(null);

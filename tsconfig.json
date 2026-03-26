@@ -1,29 +1,15 @@
 {
-  "include": [
-    "**/*.ts",
-    "**/*.tsx"
-  ],
+  "include": ["**/*.ts", "**/*.tsx"],
   "compilerOptions": {
     "target": "esnext",
     "jsx": "react-jsx",
     "module": "ESNext",
-    "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "@root/*": [
-        "./*"
-      ]
+      "@/*": ["./src/*"],
+      "@root/*": ["./*"]
     },
-    "lib": [
-      "esnext",
-      "DOM",
-      "DOM.Iterable"
-    ],
-    "types": [
-      "vite/client"
-    ],
+    "lib": ["esnext", "DOM", "DOM.Iterable"],
+    "types": ["vite/client"],
     "resolveJsonModule": true,
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -36,6 +22,6 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true,
-  },
+    "noUncheckedSideEffectImports": true
+  }
 }

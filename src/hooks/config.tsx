@@ -15,11 +15,11 @@ import { configSchema, type Config } from '@/schemas/config';
 const defaultConfig: Config = {
   sources: {
     left: {
-      baseUrl: 'http://lvh.me:3000',
+      baseUrl: 'http://localhost:3000',
       name: 'Main',
     },
     right: {
-      baseUrl: 'http://lvh.me:3001',
+      baseUrl: 'http://localhost:3001',
       name: 'Active',
     },
   },

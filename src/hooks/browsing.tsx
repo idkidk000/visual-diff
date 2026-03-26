@@ -1,3 +1,4 @@
+import { name } from '@root/package.json';
 import {
   type ReactNode,
   useState,
@@ -6,25 +7,42 @@ import {
   useMemo,
   type Dispatch,
   type SetStateAction,
+  useEffect,
 } from 'react';
 
-interface State {
-  path: string;
-  width?: number;
-  scrollY?: number;
-  subdomain?: string;
-}
+import { browsingSchema, type Browsing } from '@/schemas/browsing';
+
+const defaultBrowsing: Browsing = {
+  height: 5000,
+  path: '/',
+  subdomain: null,
+} as const;
 
 interface Context {
-  browsing: State;
-  setBrowsing: Dispatch<SetStateAction<State>>;
+  browsing: Browsing;
+  setBrowsing: Dispatch<SetStateAction<Browsing>>;
 }
 
 const Context = createContext<Context | null>(null);
 
+function loadBrowsing(): Browsing {
+  try {
+    const value = localStorage.getItem(`${name}.browsing`);
+    if (value) return browsingSchema.parse(JSON.parse(value));
+  } catch {}
+  return { ...defaultBrowsing };
+}
+
 export function BrowsingProvider({ children }: { children: ReactNode }) {
-  const [browsing, setBrowsing] = useState<State>({ path: '/' });
+  const [browsing, setBrowsing] = useState<Browsing>(loadBrowsing());
+
   const value: Context = useMemo(() => ({ browsing, setBrowsing }), [browsing]);
+
+  useEffect(() => {
+    if (browsing) localStorage.setItem(`${name}.browsing`, JSON.stringify(browsing));
+    else localStorage.removeItem(`${name}.browsing`);
+  }, [browsing]);
+
   return <Context value={value}>{children}</Context>;
 }
 

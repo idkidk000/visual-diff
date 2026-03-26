@@ -22,7 +22,10 @@ export function TextInput({
 
   return (
     <input
-      className={cn('rounded-sm border border-border bg-background p-2 text-foreground shadow-sm', className)}
+      className={cn(
+        'rounded-sm border border-border bg-background p-2 text-foreground shadow-sm text-base text-left',
+        className
+      )}
       onChange={handleChange}
       {...props}
     />

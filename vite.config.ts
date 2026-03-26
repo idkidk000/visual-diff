@@ -4,20 +4,15 @@ import { tanstackStart } from '@tanstack/react-start/plugin/vite';
 import viteReact from '@vitejs/plugin-react';
 import { nitro } from 'nitro/vite';
 import { defineConfig } from 'vite';
-import tsConfigPaths from 'vite-tsconfig-paths';
 
 const config = defineConfig({
   server: {
     port: 4000,
   },
-  plugins: [
-    devtools(),
-    nitro(),
-    tsConfigPaths(),
-    tailwindcss(),
-    tanstackStart({ spa: { enabled: true } }),
-    viteReact(),
-  ],
+  plugins: [devtools(), nitro(), tailwindcss(), tanstackStart({ spa: { enabled: true } }), viteReact()],
+  resolve: {
+    tsconfigPaths: true,
+  },
 });
 
 export default config;

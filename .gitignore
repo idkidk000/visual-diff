@@ -10,6 +10,3 @@ dist-ssr
 .output
 .vinxi
 __unconfig*
-
-/config.json
-/config.schema.json
