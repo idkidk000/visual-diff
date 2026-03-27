@@ -7,7 +7,6 @@
 
 @theme inline {
   --color-light: var(--color-violet-50);
-  /* --color-dark: oklch(from var(--color-violet-950) calc(l / 3) c h); */
   --color-dark: oklch(from var(--color-violet-950) l calc(c * 0.33) h);
   --color-foreground: light-dark(var(--color-dark), var(--color-light));
   --color-background: light-dark(var(--color-light), var(--color-dark));
@@ -15,6 +14,7 @@
   --color-muted: light-dark(var(--color-gray-500), var(--color-gray-400));
   --color-muted-contrast: light-dark(var(--color-light), var(--color-dark));
   --color-primary: light-dark(var(--color-violet-500), var(--color-violet-800));
+  --color-accent: light-dark(var(--color-violet-300), var(--color-violet-600));
   --color-danger: light-dark(var(--color-rose-500), var(--color-rose-800));
   --color-success: light-dark(var(--color-emerald-500), var(--color-emerald-800));
   --color-primary-contrast: var(--color-violet-100);
@@ -40,6 +40,6 @@
 
 @layer base {
   html {
-    @apply bg-background font-sans text-foreground antialiased caret-primary/67 accent-primary transition-colors duration-150 [caret-shape:block] selection:bg-primary/33;
+    @apply bg-background font-sans text-foreground antialiased caret-accent accent-accent transition-colors duration-150 [caret-shape:block] selection:bg-accent/67;
   }
 }

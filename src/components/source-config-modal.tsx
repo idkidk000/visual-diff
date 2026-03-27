@@ -2,15 +2,14 @@ import { Check, X } from 'lucide-react';
 import { useCallback, useEffect, useEffectEvent, useRef, useState, type SubmitEvent } from 'react';
 
 import { Button } from '@/components/button';
+import { InputText } from '@/components/input/text';
 import { LabelledControl } from '@/components/labelled-control';
 import { ModalContent, ModalState, useModal } from '@/components/modal';
-import { TextInput } from '@/components/text-input';
 import { useConfig } from '@/hooks/config';
-import { dottedKeyEntriesToObject, objectToDottedKeyEntries } from '@/lib/utils';
-import { configSchema } from '@/schemas/config';
+import { objectToDottedKeyEntries } from '@/lib/utils';
 
 export function SourceConfigModalContent({ sourceName }: { sourceName: 'left' | 'right' }) {
-  const { config, setConfig } = useConfig();
+  const { config, updateConfig } = useConfig();
   const { close, state } = useModal();
   const [errors, setErrors] = useState<string | null>(null);
   const ref = useRef<HTMLFormElement | null>(null);
@@ -18,18 +17,11 @@ export function SourceConfigModalContent({ sourceName }: { sourceName: 'left' | 
   const handleSubmit = useCallback(
     async (event: SubmitEvent<HTMLFormElement>) => {
       event.preventDefault();
-      const data = new FormData(event.target);
-      const parsed = configSchema.safeParse(
-        dottedKeyEntriesToObject([...objectToDottedKeyEntries(config), ...data.entries()])
-      );
-      if (!parsed.success) {
-        setErrors(parsed.error.message);
-        return;
-      }
-      setConfig(parsed.data);
-      close();
+      const result = updateConfig(Object.fromEntries(new FormData(event.target).entries()));
+      if (result === true) close();
+      else setErrors(result);
     },
-    [close, config, setConfig]
+    [close, updateConfig]
   );
 
   const resetForm = useEffectEvent(() => {
@@ -48,9 +40,9 @@ export function SourceConfigModalContent({ sourceName }: { sourceName: 'left' | 
   return (
     <ModalContent sticky className='max-w-md text-left'>
       <form className='grid gap-4' onSubmit={handleSubmit} ref={ref}>
-        <h2 className='text-center font-semibold'>Configure source</h2>
+        <h2 className='text-center font-semibold'>{`Configure ${sourceName} source`}</h2>
         <LabelledControl label='Name'>
-          <TextInput
+          <InputText
             placeholder='Name'
             defaultValue={config.sources[sourceName].name}
             name={`sources.${sourceName}.name`}
@@ -58,7 +50,7 @@ export function SourceConfigModalContent({ sourceName }: { sourceName: 'left' | 
           />
         </LabelledControl>
         <LabelledControl label='Base URL'>
-          <TextInput
+          <InputText
             placeholder='Base URL'
             type='url'
             defaultValue={config.sources[sourceName].baseUrl}

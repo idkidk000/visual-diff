@@ -1,12 +1,7 @@
 import { displayName } from '@root/package.json';
-import { TanStackDevtools } from '@tanstack/react-devtools';
 import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router';
-import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools';
 
-import { Nav } from '@/components/nav';
-import { BrowsingProvider } from '@/hooks/browsing';
 import { ConfigProvider } from '@/hooks/config';
-import { NavProvider } from '@/hooks/nav';
 
 import appCss from '@/styles.css?url';
 
@@ -29,21 +24,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <ConfigProvider>
-        <NavProvider>
-          <BrowsingProvider>
-            <body>
-              <div className='grid h-dvh max-h-dvh min-h-dvh grid-rows-[auto_1fr] overflow-hidden wrap-anywhere'>
-                <Nav />
-                <main className='@container overflow-y-auto p-4'>{children}</main>
-              </div>
-              <TanStackDevtools
-                config={{ position: 'bottom-right' }}
-                plugins={[{ name: 'Tanstack Router', render: <TanStackRouterDevtoolsPanel /> }]}
-              />
-              <Scripts />
-            </body>
-          </BrowsingProvider>
-        </NavProvider>
+        <body>
+          {children}
+          <Scripts />
+        </body>
       </ConfigProvider>
     </html>
   );

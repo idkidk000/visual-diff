@@ -3,7 +3,6 @@ import { useEffect, useMemo, type RefObject } from 'react';
 
 import { Modal, ModalOpenButton } from '@/components/modal';
 import { SourceConfigModalContent } from '@/components/source-config-modal';
-import { useBrowsing } from '@/hooks/browsing';
 import { useConfig } from '@/hooks/config';
 
 export function SourceView({
@@ -13,21 +12,20 @@ export function SourceView({
   sourceName: 'left' | 'right';
   ref: RefObject<HTMLIFrameElement | null>;
 }) {
-  const { browsing } = useBrowsing();
   const { config } = useConfig();
 
   const source = useMemo(() => config.sources[sourceName], [config.sources, sourceName]);
 
   const href = useMemo(() => {
     const baseUrl = source.baseUrl;
-    const url = new URL(browsing.path, baseUrl);
-    if (browsing.subdomain) url.hostname = `${browsing.subdomain}.${url.hostname}`;
+    const url = new URL(config.browsing.path, baseUrl);
+    if (config.browsing.subdomain) url.hostname = `${config.browsing.subdomain}.${url.hostname}`;
     return url.href;
-  }, [browsing.subdomain, browsing.path, source]);
+  }, [config.browsing.subdomain, config.browsing.path, source]);
 
   useEffect(() => {
     ref.current?.contentWindow?.location.replace(href);
-  }, [browsing, href, ref]);
+  }, [config.browsing, href, ref]);
 
   return (
     <div className='grid text-center'>
@@ -42,11 +40,19 @@ export function SourceView({
       <iframe
         title={source.name}
         ref={ref}
-        className='w-full'
-        height={browsing.height}
+        className='col-start-1 row-start-3 w-full'
+        height={config.layout.height}
         src={href}
         sandbox='allow-same-origin allow-scripts allow-forms'
       />
+      {config.grid.show && (
+        <span
+          className='pointer-events-none col-start-1 row-start-3 size-full'
+          style={{
+            background: `repeating-linear-gradient(to right, ${config.grid.colour} 0 1px, transparent 1px ${config.grid.pitch - 1}px), repeating-linear-gradient(to bottom, ${config.grid.colour} 0 1px, transparent 1px ${config.grid.pitch - 1}px)`,
+          }}
+        />
+      )}
     </div>
   );
 }

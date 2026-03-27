@@ -1,33 +1,13 @@
 import { name } from '@root/package.json';
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-  type Dispatch,
-  type ReactNode,
-  type SetStateAction,
-} from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 
-import { configSchema, type Config } from '@/schemas/config';
-
-const defaultConfig: Config = {
-  sources: {
-    left: {
-      baseUrl: 'http://localhost:3000',
-      name: 'Main',
-    },
-    right: {
-      baseUrl: 'http://localhost:3001',
-      name: 'Active',
-    },
-  },
-} as const;
+import { dottedKeyEntriesToObject, objectToDottedKeyEntries } from '@/lib/utils';
+import { configSchema, type Config, defaultConfig, type PartialConfig } from '@/schemas/config';
 
 interface Context {
   config: Config;
-  setConfig: Dispatch<SetStateAction<Config>>;
+  // TODO: maybe just accept a FormData obj and type xInput.name as dotted keyof Config
+  updateConfig: (value: PartialConfig) => true | string;
 }
 
 const Context = createContext<Context | null>(null);
@@ -42,13 +22,28 @@ function loadConfig(): Config {
 
 export function ConfigProvider({ children }: { children: ReactNode }) {
   const [config, setConfig] = useState<Config>(loadConfig);
-
-  const value: Context = useMemo(() => ({ config, setConfig }), [config]);
+  const configRef = useRef(config);
 
   useEffect(() => {
-    if (config) localStorage.setItem(`${name}.config`, JSON.stringify(config));
-    else localStorage.removeItem(`${name}.config`);
+    configRef.current = config;
+    localStorage.setItem(`${name}.config`, JSON.stringify(config));
   }, [config]);
+
+  const updateConfig: Context['updateConfig'] = useCallback((value) => {
+    const raw = dottedKeyEntriesToObject([
+      ...objectToDottedKeyEntries(configRef.current),
+      ...objectToDottedKeyEntries(value),
+    ]);
+    const parsed = configSchema.safeParse(raw);
+    if (parsed.error) {
+      console.error(objectToDottedKeyEntries(configRef.current), raw, parsed.error.message);
+      return parsed.error.message;
+    }
+    setConfig(parsed.data);
+    return true;
+  }, []);
+
+  const value: Context = useMemo(() => ({ config, updateConfig }), [config, updateConfig]);
 
   return <Context value={value}>{children}</Context>;
 }

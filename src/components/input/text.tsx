@@ -2,7 +2,7 @@ import { useCallback, type ChangeEvent, type ComponentProps } from 'react';
 
 import { cn } from '@/lib/utils';
 
-export function TextInput({
+export function InputText({
   className,
   onChange,
   onValueChange,
@@ -23,7 +23,7 @@ export function TextInput({
   return (
     <input
       className={cn(
-        'rounded-sm border border-border bg-background p-2 text-foreground shadow-sm text-base text-left',
+        'rounded-sm border border-border bg-background text-foreground p-2 shadow-md text-base text-left  outline-2 outline-transparent focus:outline-accent',
         className
       )}
       onChange={handleChange}

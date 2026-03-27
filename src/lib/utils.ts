@@ -29,8 +29,15 @@ export function objectToDottedKeyEntries(
 ): [key: string, value: unknown][] {
   for (const [key, value] of Object.entries(obj)) {
     const dotted = parent ? `${parent}.${key}` : key;
-    if (typeof value === 'object') objectToDottedKeyEntries(value as Record<string, unknown>, entries, dotted);
+    if (typeof value === 'object' && value !== null && !Array.isArray(value))
+      objectToDottedKeyEntries(value as Record<string, unknown>, entries, dotted);
     else entries.push([dotted, value]);
   }
   return entries;
 }
+
+export type DeepPartial<T> = T extends object
+  ? {
+      [P in keyof T]?: DeepPartial<T[P]>;
+    }
+  : T;

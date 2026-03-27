@@ -2,7 +2,7 @@ import { useCallback, type ChangeEvent, type ComponentProps } from 'react';
 
 import { cn } from '@/lib/utils';
 
-export function NumberInput({
+export function InputNumber({
   className,
   onChange,
   onValueChange,
@@ -27,7 +27,7 @@ export function NumberInput({
     <input
       type='number'
       className={cn(
-        'rounded-sm border border-border bg-background p-2 text-foreground shadow-sm text-base text-right',
+        'rounded-sm border border-border bg-background text-foreground p-2 shadow-md text-base text-right  outline-2 outline-transparent focus:outline-accent',
         className
       )}
       onChange={handleChange}

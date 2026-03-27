@@ -6,19 +6,17 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
+    "check": "tsgo --noEmit",
     "dev": "vite dev",
     "format": "oxfmt",
     "lint": "oxlint --fix",
+    "pre": "pnpm check && pnpm format && pnpm lint",
     "preview": "vite preview",
-    "start": "node .output/server/index.mjs",
-    "check": "tsgo --noEmit"
+    "start": "node .output/server/index.mjs"
   },
   "dependencies": {
     "@tailwindcss/vite": "latest",
-    "@tanstack/react-devtools": "latest",
     "@tanstack/react-router": "latest",
-    "@tanstack/react-router-devtools": "latest",
-    "@tanstack/react-router-ssr-query": "latest",
     "@tanstack/react-start": "latest",
     "@tanstack/router-plugin": "latest",
     "lucide-react": "latest",
@@ -28,7 +26,6 @@
     "zod": "latest"
   },
   "devDependencies": {
-    "@tanstack/devtools-vite": "latest",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
