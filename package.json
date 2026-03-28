@@ -7,18 +7,15 @@
   "scripts": {
     "build": "vite build",
     "check": "tsgo --noEmit",
+    "deploy": "pnpm pre && cd dist && git switch deploy && pnpm build && git add . && git status",
     "dev": "vite dev",
     "format": "oxfmt",
     "lint": "oxlint --fix",
     "pre": "pnpm check && pnpm format && pnpm lint",
-    "preview": "vite preview",
-    "start": "node .output/server/index.mjs"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@tailwindcss/vite": "latest",
-    "@tanstack/react-router": "latest",
-    "@tanstack/react-start": "latest",
-    "@tanstack/router-plugin": "latest",
     "lucide-react": "latest",
     "react": "latest",
     "react-dom": "latest",
@@ -26,13 +23,11 @@
     "zod": "latest"
   },
   "devDependencies": {
-    "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "@typescript/native-preview": "latest",
     "@vitejs/plugin-react": "latest",
     "clsx": "latest",
-    "nitro": "latest",
     "oxfmt": "latest",
     "oxlint": "latest",
     "oxlint-tsgolint": "latest",

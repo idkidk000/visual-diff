@@ -119,9 +119,13 @@ export function ModalContent({
     );
 
     if (sticky)
-      ref.current.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape') animate();
-      });
+      ref.current.addEventListener(
+        'keydown',
+        (event) => {
+          if (event.key === 'Escape') animate();
+        },
+        { signal: controller.signal }
+      );
 
     return () => controller.abort();
   }, [close, ref, sticky]);

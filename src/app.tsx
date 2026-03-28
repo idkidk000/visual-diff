@@ -1,4 +1,3 @@
-import { createFileRoute } from '@tanstack/react-router';
 import { RefreshCw } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState, type SubmitEvent } from 'react';
 
@@ -12,9 +11,7 @@ import { SourceView } from '@/components/source-view';
 import { useConfig } from '@/hooks/config';
 import { dottedKeyEntriesToObject, objectToDottedKeyEntries } from '@/lib/utils';
 
-export const Route = createFileRoute('/')({ component: App });
-
-function App() {
+export function App() {
   const { config, updateConfig } = useConfig();
   const leftRef = useRef<HTMLIFrameElement | null>(null);
   const rightRef = useRef<HTMLIFrameElement | null>(null);
