@@ -30,7 +30,13 @@ export function SourceView({
   return (
     <div className='grid text-center'>
       <h2 className='col-start-1 row-start-1 font-semibold'>{source.name}</h2>
-      <h3 className='col-start-1 row-start-2 text-muted'>{href}</h3>
+      <a
+        className='col-start-1 row-start-2 text-muted transition-colors hover:text-primary'
+        href={href}
+        target='_blank'
+      >
+        {href}
+      </a>
       <Modal>
         <ModalOpenButton variant='ghost' className='col-start-1 row-span-2 row-start-1 my-auto ms-auto'>
           <Settings />

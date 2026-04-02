@@ -37,6 +37,8 @@ export function SourceConfigModalContent({ sourceName }: { sourceName: 'left' | 
     resetForm();
   }, [state]);
 
+  const isHttps = window.location.protocol === 'https:';
+
   return (
     <ModalContent sticky className='max-w-md text-left'>
       <form className='grid gap-4' onSubmit={handleSubmit} ref={ref}>
@@ -62,6 +64,12 @@ export function SourceConfigModalContent({ sourceName }: { sourceName: 'left' | 
         <span className='text-sm text-muted'>
           Be sure to disable X-Frame-Options header if set. CORS can be left enabled.
         </span>
+        {isHttps && (
+          <span className='text-sm text-danger'>
+            This page was served over HTTPS so you may only view HTTPS content. If you need plain HTTP, run the app
+            locally.
+          </span>
+        )}
         <fieldset className='flex justify-around'>
           <Button className='mx-auto'>
             <Check />

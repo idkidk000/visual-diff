@@ -46,6 +46,12 @@ export function App() {
           event.preventDefault();
           formRef.current?.querySelector('input')?.focus();
         }
+        if (event.key.toLocaleLowerCase() === 'f' && event.ctrlKey && !event.altKey && !event.shiftKey) {
+          console.debug('ctrl+f');
+          event.preventDefault();
+          if (document.fullscreenElement) document.exitFullscreen();
+          else document.body.requestFullscreen();
+        }
       },
       { signal: controller.signal }
     );
